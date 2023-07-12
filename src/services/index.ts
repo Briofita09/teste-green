@@ -1,6 +1,6 @@
 import { Boleto, CsvElement } from "../interfaces";
-import { getLots, saveBoleto } from "../repositories";
-import { readCsv } from "../utils";
+import { getBoletos, getLots, saveBoleto } from "../repositories";
+import { pdfGenerator, readCsv } from "../utils";
 
 export async function checkUnit(file: any) {
   const list: Array<CsvElement> = await readCsv(file);
@@ -21,4 +21,10 @@ export async function checkUnit(file: any) {
     }
   }
   boletos.map(async (el: Boleto) => await saveBoleto(el));
+}
+
+export async function generateBoletosPdf() {
+  const boletos = await getBoletos();
+  const orderedBoletos = boletos.sort((a, b) => a.id - b.id);
+  await pdfGenerator(orderedBoletos);
 }

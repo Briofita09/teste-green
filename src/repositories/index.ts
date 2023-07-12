@@ -17,3 +17,7 @@ export async function saveBoleto(boleto: Boleto) {
     },
   });
 }
+
+export async function getBoletos() {
+  return await prisma.boleto.findMany();
+}
