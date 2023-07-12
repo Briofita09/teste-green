@@ -1,4 +1,4 @@
-import { Boleto, CsvElement } from "../interface";
+import { Boleto, CsvElement } from "../interfaces";
 import { getLots, saveBoleto } from "../repositories";
 import { readCsv } from "../utils";
 

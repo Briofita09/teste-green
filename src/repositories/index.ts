@@ -1,5 +1,5 @@
 import { prisma } from "../database";
-import { Boleto } from "../interface";
+import { Boleto } from "../interfaces";
 
 export async function getLots() {
   return await prisma.lote.findMany();
