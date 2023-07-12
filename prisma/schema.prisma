@@ -1,0 +1,32 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Boleto {
+  id              Int       @id @default(autoincrement())
+  nome_sacado     String?   @db.VarChar(255)
+  id_lote         Int
+  valor           Decimal?  @db.Decimal
+  linha_digitavel String?   @db.VarChar(255)
+  ativo           Boolean?
+  criado_em       DateTime? @db.Timestamp(6)
+  
+  Lote Lote @relation(fields: [id_lote], references: [id])
+
+  @@map("boletos")
+}
+
+model Lote {
+  id        Int       @id @default(autoincrement())
+  nome      String?   @db.VarChar(100)
+  ativo     Boolean?
+  criado_em DateTime? @db.Timestamp(6)
+  boletos   Boleto[]
+
+  @@map("lotes")
+}
