@@ -18,6 +18,6 @@ export async function saveBoleto(boleto: Boleto) {
   });
 }
 
-export async function getBoletos() {
-  return await prisma.boleto.findMany();
+export async function getBoletos(filter: any) {
+  return await prisma.boleto.findMany({ where: { ...filter } });
 }

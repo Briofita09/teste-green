@@ -25,7 +25,7 @@ export async function pdfGenerator(arr: any) {
   for (const el of arr) {
     const rows = new Array();
     rows.push({
-      text: `${el.nome_sacado} - ${el.valor} - ${el.linha_digitavel}`,
+      text: `${el.id} - ${el.nome_sacado} - ${el.valor} - ${el.linha_digitavel}`,
       pageBreak: "after",
     });
     body.push(rows);
@@ -50,5 +50,38 @@ export async function pdfGenerator(arr: any) {
 
   pdfDoc.pipe(fs.createWriteStream("Boletos.pdf"));
 
+  pdfDoc.end();
+}
+
+export async function generateSingleBoleto(text: string) {
+  function extractData(text: string) {
+    const parts = text.split(" - ");
+    const boletoId = parts[0];
+    const name = parts[1];
+    const value = parts[2];
+    const code = parts[3];
+    return { boletoId, name, value, code };
+  }
+  const boletoData = extractData(text);
+
+  const font = {
+    Courier: {
+      normal: "Courier",
+      bold: "Courier-Bold",
+      italics: "Courier-Oblique",
+      bolditalics: "Courier-BoldOblique",
+    },
+  };
+
+  const printer = new PdfPrinter(font);
+
+  const docDefinitions: TDocumentDefinitions = {
+    defaultStyle: { font: "Courier" },
+    content: {
+      text: `${boletoData.name} - ${boletoData.value} - ${boletoData.code}`,
+    },
+  };
+  const pdfDoc = printer.createPdfKitDocument(docDefinitions);
+  pdfDoc.pipe(fs.createWriteStream(`${boletoData.boletoId}.pdf`));
   pdfDoc.end();
 }

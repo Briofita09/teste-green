@@ -1,6 +1,10 @@
+import fs from "fs";
+
 import { Boleto, CsvElement } from "../interfaces";
 import { getBoletos, getLots, saveBoleto } from "../repositories";
-import { pdfGenerator, readCsv } from "../utils";
+import { generateSingleBoleto, pdfGenerator, readCsv } from "../utils";
+
+import PdfParse from "pdf-parse";
 
 export async function checkUnit(file: any) {
   const list: Array<CsvElement> = await readCsv(file);
@@ -24,7 +28,24 @@ export async function checkUnit(file: any) {
 }
 
 export async function generateBoletosPdf() {
-  const boletos = await getBoletos();
+  const boletos = await getBoletos({});
   const orderedBoletos = boletos.sort((a, b) => a.id - b.id);
   await pdfGenerator(orderedBoletos);
+}
+
+export async function generateSingleBoletoPdf(file: any) {
+  PdfParse(file).then(async (parsedData) => {
+    const pages = parsedData.text.split("\n");
+    const splitedPages: string[] = [];
+    pages.map((page) => {
+      if (page !== "") splitedPages.push(page);
+    });
+    for (let i = 0; i < splitedPages.length; i++) {
+      await generateSingleBoleto(splitedPages[i]);
+    }
+  });
+}
+
+export async function generateReport() {
+  //
 }
