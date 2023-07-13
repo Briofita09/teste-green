@@ -2,7 +2,12 @@ import fs from "fs";
 
 import { Boleto, CsvElement } from "../interfaces";
 import { getBoletos, getLots, saveBoleto } from "../repositories";
-import { generateSingleBoleto, pdfGenerator, readCsv } from "../utils";
+import {
+  generatePdfReport,
+  generateSingleBoleto,
+  pdfGenerator,
+  readCsv,
+} from "../utils";
 
 import PdfParse from "pdf-parse";
 
@@ -47,5 +52,7 @@ export async function generateSingleBoletoPdf(file: any) {
 }
 
 export async function generateReport() {
-  //
+  const boletos = await getBoletos({});
+  const pdf = await generatePdfReport(boletos);
+  return pdf;
 }

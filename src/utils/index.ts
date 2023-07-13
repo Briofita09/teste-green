@@ -85,3 +85,53 @@ export async function generateSingleBoleto(text: string) {
   pdfDoc.pipe(fs.createWriteStream(`${boletoData.boletoId}.pdf`));
   pdfDoc.end();
 }
+
+export async function generatePdfReport(array: any) {
+  const body = [];
+  const chunks: any[] = [];
+  let result;
+  for (const el of array) {
+    const rows = new Array();
+    rows.push(`${el.id}`);
+    rows.push(`${el.nome_sacado}`);
+    rows.push(`${el.id_lote}`);
+    rows.push(`${el.valor}`);
+    rows.push(`${el.linha_digitavel}`);
+    body.push(rows);
+  }
+  const font = {
+    Courier: {
+      normal: "Courier",
+      bold: "Courier-Bold",
+      italics: "Courier-Oblique",
+      bolditalics: "Courier-BoldOblique",
+    },
+  };
+  const printer = new PdfPrinter(font);
+
+  const docDefinitions: TDocumentDefinitions = {
+    defaultStyle: { font: "Courier" },
+    content: [
+      {
+        style: "tableExample",
+        table: {
+          body: [
+            ["id", "nome_sacado", "id_lote", "valor", "linha_digitavel"],
+            ...body,
+          ],
+        },
+      },
+    ],
+  };
+  const pdfDoc = printer.createPdfKitDocument(docDefinitions);
+
+  const pdfBuffer = await new Promise<Buffer>((resolve, reject) => {
+    const chunks: Buffer[] = [];
+    pdfDoc.on("data", (chunk) => chunks.push(chunk));
+    pdfDoc.end();
+    pdfDoc.on("end", () => resolve(Buffer.concat(chunks)));
+    pdfDoc.on("error", (error) => reject(error));
+  });
+
+  return pdfBuffer;
+}

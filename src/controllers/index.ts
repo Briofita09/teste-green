@@ -37,6 +37,8 @@ export async function getAllBoletos(req: Request, res: Response) {
 
   if (req.query.relatorio === "1") {
     const pdf = await generateReport();
+    const base64String = Buffer.from(pdf).toString("base64");
+    return res.status(200).send(base64String);
   }
 
   return res.status(200).json(boletos);
