@@ -1,11 +1,12 @@
 import { prisma } from "../database";
-import { Boleto } from "../interfaces";
+import { BoletoInterface } from "../interfaces";
+import { Lote, Boleto } from "@prisma/client";
 
-export async function getLots() {
+export async function getLots(): Promise<Lote[]> {
   return await prisma.lote.findMany();
 }
 
-export async function saveBoleto(boleto: Boleto) {
+export async function saveBoleto(boleto: BoletoInterface) {
   return await prisma.boleto.create({
     data: {
       nome_sacado: boleto.nome_sacado,
@@ -18,6 +19,6 @@ export async function saveBoleto(boleto: Boleto) {
   });
 }
 
-export async function getBoletos(filter: any) {
+export async function getBoletos(filter: any): Promise<Boleto[]> {
   return await prisma.boleto.findMany({ where: { ...filter } });
 }

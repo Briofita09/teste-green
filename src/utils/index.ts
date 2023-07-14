@@ -3,7 +3,7 @@ import csvParser from "csv-parser";
 import PdfPrinter from "pdfmake";
 import { TDocumentDefinitions } from "pdfmake/interfaces";
 
-export async function readCsv(file: any) {
+export async function readCsv(file: any): Promise<any> {
   try {
     const csvRows: any = [];
     await new Promise((resolve, reject) => {
@@ -20,7 +20,7 @@ export async function readCsv(file: any) {
   }
 }
 
-export async function pdfGenerator(arr: any) {
+export async function pdfGenerator(arr: any): Promise<PDFKit.PDFDocument> {
   const body = [];
   for (const el of arr) {
     const rows = new Array();
@@ -51,9 +51,10 @@ export async function pdfGenerator(arr: any) {
   pdfDoc.pipe(fs.createWriteStream("Boletos.pdf"));
 
   pdfDoc.end();
+  return pdfDoc;
 }
 
-export async function generateSingleBoleto(text: string) {
+export async function generateSingleBoleto(text: string): Promise<void> {
   function extractData(text: string) {
     const parts = text.split(" - ");
     const boletoId = parts[0];
@@ -86,7 +87,7 @@ export async function generateSingleBoleto(text: string) {
   pdfDoc.end();
 }
 
-export async function generatePdfReport(array: any) {
+export async function generatePdfReport(array: any): Promise<Buffer> {
   const body = [];
   const chunks: any[] = [];
   let result;

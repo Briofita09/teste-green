@@ -6,8 +6,11 @@ import {
   generateSingleBoletoPdf,
 } from "../services";
 import { getBoletos } from "../repositories";
+import { IncorrectFileType, NotFoundCsv } from "../errors";
 
 export async function getCsv(req: Request, res: Response) {
+  if (!req.file?.buffer) throw NotFoundCsv();
+  if (req.file?.mimetype !== "text/csv") throw IncorrectFileType();
   await checkUnit(req.file?.buffer);
   return res.send();
 }
@@ -18,11 +21,17 @@ export async function generatePdf(_req: Request, res: Response) {
 }
 
 export async function generateBoleto(req: Request, res: Response) {
+  if (req.file?.mimetype !== "application/pdf") throw IncorrectFileType();
   await generateSingleBoletoPdf(req.file?.buffer);
   return res.send();
 }
 
 export async function getAllBoletos(req: Request, res: Response) {
+  if (req.query.relatorio === "1") {
+    const pdf = await generateReport();
+    const base64String = Buffer.from(pdf).toString("base64");
+    return res.status(200).send(base64String);
+  }
   const name = req.query.nome || "";
   const filter = {
     nome_sacado: { contains: name },
@@ -34,12 +43,6 @@ export async function getAllBoletos(req: Request, res: Response) {
   };
 
   const boletos = await getBoletos(filter);
-
-  if (req.query.relatorio === "1") {
-    const pdf = await generateReport();
-    const base64String = Buffer.from(pdf).toString("base64");
-    return res.status(200).send(base64String);
-  }
 
   return res.status(200).json(boletos);
 }

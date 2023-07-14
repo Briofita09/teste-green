@@ -1,6 +1,6 @@
 import fs from "fs";
 
-import { Boleto, CsvElement } from "../interfaces";
+import { BoletoInterface, CsvElement, PDF } from "../interfaces";
 import { getBoletos, getLots, saveBoleto } from "../repositories";
 import {
   generatePdfReport,
@@ -10,12 +10,14 @@ import {
 } from "../utils";
 
 import PdfParse from "pdf-parse";
+import { BoletoDbError, IncorrectFile, PdfGenerationError } from "../errors";
 
-export async function checkUnit(file: any) {
+export async function checkUnit(file: any): Promise<void> {
   const list: Array<CsvElement> = await readCsv(file);
   const lots = await getLots();
   const boletos = [];
 
+  if (!list[0].nome) throw IncorrectFile();
   for (const element of list) {
     for (const lot of lots) {
       if (Number(element.unidade) === Number(lot.nome)) {
@@ -29,16 +31,25 @@ export async function checkUnit(file: any) {
       }
     }
   }
-  boletos.map(async (el: Boleto) => await saveBoleto(el));
+  boletos.map(async (el: BoletoInterface) => {
+    try {
+      await saveBoleto(el);
+    } catch (err) {
+      console.log(err);
+      throw BoletoDbError(el);
+    }
+  });
 }
 
-export async function generateBoletosPdf() {
+export async function generateBoletosPdf(): Promise<PDFKit.PDFDocument> {
   const boletos = await getBoletos({});
   const orderedBoletos = boletos.sort((a, b) => a.id - b.id);
-  await pdfGenerator(orderedBoletos);
+  const pdf = await pdfGenerator(orderedBoletos);
+  if (!pdf) throw PdfGenerationError();
+  return pdf;
 }
 
-export async function generateSingleBoletoPdf(file: any) {
+export async function generateSingleBoletoPdf(file: any): Promise<void> {
   PdfParse(file).then(async (parsedData) => {
     const pages = parsedData.text.split("\n");
     const splitedPages: string[] = [];
@@ -51,8 +62,9 @@ export async function generateSingleBoletoPdf(file: any) {
   });
 }
 
-export async function generateReport() {
+export async function generateReport(): Promise<Buffer> {
   const boletos = await getBoletos({});
   const pdf = await generatePdfReport(boletos);
+  if (!pdf) throw PdfGenerationError();
   return pdf;
 }
