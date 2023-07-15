@@ -1,5 +1,3 @@
-import fs from "fs";
-
 import { BoletoInterface, CsvElement, PDF } from "../interfaces";
 import { getBoletos, getLots, saveBoleto } from "../repositories";
 import {
@@ -16,8 +14,7 @@ export async function checkUnit(file: any): Promise<void> {
   const list: Array<CsvElement> = await readCsv(file);
   const lots = await getLots();
   const boletos = [];
-
-  if (!list[0].nome) throw IncorrectFile();
+  if (list[0] === undefined || !list[0].nome) throw IncorrectFile();
   for (const element of list) {
     for (const lot of lots) {
       if (Number(element.unidade) === Number(lot.nome)) {
@@ -35,7 +32,6 @@ export async function checkUnit(file: any): Promise<void> {
     try {
       await saveBoleto(el);
     } catch (err) {
-      console.log(err);
       throw BoletoDbError(el);
     }
   });
