@@ -95,6 +95,13 @@ FILTROS ACEITOS:
 - relatorio=1
 ```
 
+## 🔍 Testando
+Para rodar os testes, depois de ter configurado o prisma, rode o seguinte comando
+
+```bash
+$ npm run test
+```
+
 ## 🧠 Desenvolvedor
 
 [Felipe Osório dos Santos](https://www.linkedin.com/in/felipe-osorio/)
