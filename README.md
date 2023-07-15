@@ -63,6 +63,8 @@ RETORNOS ESPERADOS:
 ```
 
 [Arquivo pdf de exemplo para o body](Boletos.pdf)
+&nbsp;
+
 [Arquivo pdf de exemplo para a resposta](4.pdf)
 
 ```
