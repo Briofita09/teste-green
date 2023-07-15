@@ -82,7 +82,7 @@ RETORNOS ESPERADOS:
 ```
 
 ```
-ROTA /generate-boleto:
+ROTA /boletos:
 
 Método: GET
 
