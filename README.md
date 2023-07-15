@@ -35,7 +35,7 @@ $ npm run dev
 
 ## 💻 Documentação
 
-[Arquivo de exemplo para o body](boletos.csv)
+[Arquivo csv de exemplo para o body](boletos.csv)
 
 ```
 ROTA /:
@@ -62,7 +62,7 @@ RETORNOS ESPERADOS:
 500 -> Erro ao gerar o pdf
 ```
 
-[Arquivo de exemplo para o body](Boletos.pdf)
+[Arquivo pdf de exemplo para o body](Boletos.pdf)
 
 ```
 ROTA /generate-boleto:
