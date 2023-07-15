@@ -22,7 +22,7 @@ export async function generatePdf(_req: Request, res: Response) {
 
 export async function generateBoleto(req: Request, res: Response) {
   if (req.file?.mimetype !== "application/pdf") throw IncorrectFileType();
-  await generateSingleBoletoPdf(req.file?.buffer);
+  //await generateSingleBoletoPdf(req.file?.buffer);
   return res.send();
 }
 

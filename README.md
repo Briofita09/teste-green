@@ -35,6 +35,8 @@ $ npm run dev
 
 ## 💻 Documentação
 
+[Arquivo de exemplo para o body](boletos.csv)
+
 ```
 ROTA /:
 
@@ -46,6 +48,48 @@ RETORNOS ESPERADOS:
 
 200 -> Sucesso
 406 -> .csv não encontrado ou arquivo não contendo as informações corretas
+500 -> Erro ao salvar algum boleto no banco de dados
+```
+
+```
+ROTA /generate-pdf:
+
+Método: GET
+
+RETORNOS ESPERADOS:
+
+200 -> Sucesso
+500 -> Erro ao gerar o pdf
+```
+
+[Arquivo de exemplo para o body](Boletos.pdf)
+
+```
+ROTA /generate-boleto:
+
+Método: POST
+Content-Disposition: form-data; name="file"; filename="Boletos.pdf"
+Content-Type: application/pdf
+
+RETORNOS ESPERADOS:
+
+200 -> Sucesso
+406 -> Formato de arquivo inesperado
+500 -> Erro ao gerar o pdf
+```
+
+```
+ROTA /generate-boleto:
+
+Método: GET
+
+RETORNOS ESPERADOS:
+
+200 -> Sucesso -> retorna uma string base64
+
+FILTROS ACEITOS:
+- nome=JOSE&valor_inicial=100&valor_final=200&id_lote=2
+- relatorio=1
 ```
 
 ## 🧠 Desenvolvedor
