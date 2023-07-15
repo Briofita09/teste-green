@@ -33,6 +33,21 @@ E por fim, rode o seguinte comando
 $ npm run dev
 ```
 
+## 💻 Documentação
+
+```
+ROTA /:
+
+Método: POST
+Content-Disposition: form-data; name="file"; filename="boletos.csv"
+Content-Type: text/csv
+
+RETORNOS ESPERADOS:
+
+200 -> Sucesso
+406 -> .csv não encontrado ou arquivo não contendo as informações corretas
+```
+
 ## 🧠 Desenvolvedor
 
 [Felipe Osório dos Santos](https://www.linkedin.com/in/felipe-osorio/)

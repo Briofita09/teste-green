@@ -3,7 +3,7 @@ import { BoletoInterface, CustomError } from "../interfaces";
 export function NotFoundCsv(): CustomError {
   return {
     message: "Insira um arquivo .csv para completar a requisição",
-    status: 404,
+    status: 406,
   };
 }
 
