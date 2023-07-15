@@ -62,7 +62,10 @@ RETORNOS ESPERADOS:
 500 -> Erro ao gerar o pdf
 ```
 
-[Arquivo pdf de exemplo para o body](Boletos.pdf) &nbsp;
+[Arquivo pdf de exemplo para o body](Boletos.pdf)
+
+&nbsp;
+
 [Arquivo pdf de exemplo para a resposta](4.pdf)
 
 ```
