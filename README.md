@@ -63,6 +63,7 @@ RETORNOS ESPERADOS:
 ```
 
 [Arquivo pdf de exemplo para o body](Boletos.pdf)
+[Arquivo pdf de exemplo para a resposta](4.pdf)
 
 ```
 ROTA /generate-boleto:
@@ -73,7 +74,7 @@ Content-Type: application/pdf
 
 RETORNOS ESPERADOS:
 
-200 -> Sucesso
+200 -> Sucesso -> Salva arquivos pdf no computdor do usuário
 406 -> Formato de arquivo inesperado
 500 -> Erro ao gerar o pdf
 ```
