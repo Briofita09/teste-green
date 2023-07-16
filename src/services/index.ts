@@ -39,7 +39,10 @@ export async function checkUnit(file: any): Promise<void> {
 
 export async function generateBoletosPdf(): Promise<PDFKit.PDFDocument> {
   const boletos = await getBoletos({});
-  const orderedBoletos = boletos.sort((a, b) => a.id - b.id);
+  const orderedBoletos = boletos.sort((a, b) =>
+    (a.nome_sacado ?? "").localeCompare(b.nome_sacado ?? "")
+  );
+  console.log(orderedBoletos);
   const pdf = await pdfGenerator(orderedBoletos);
   if (!pdf) throw PdfGenerationError();
   return pdf;
