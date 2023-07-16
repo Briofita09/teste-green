@@ -42,7 +42,6 @@ export async function generateBoletosPdf(): Promise<PDFKit.PDFDocument> {
   const orderedBoletos = boletos.sort((a, b) =>
     (a.nome_sacado ?? "").localeCompare(b.nome_sacado ?? "")
   );
-  console.log(orderedBoletos);
   const pdf = await pdfGenerator(orderedBoletos);
   if (!pdf) throw PdfGenerationError();
   return pdf;
