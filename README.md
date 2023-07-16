@@ -82,7 +82,7 @@ RETORNOS ESPERADOS:
 ```
 
 ```
-ROTA /generate-boleto:
+ROTA /boletos:
 
 Método: GET
 
@@ -93,6 +93,13 @@ RETORNOS ESPERADOS:
 FILTROS ACEITOS:
 - nome=JOSE&valor_inicial=100&valor_final=200&id_lote=2
 - relatorio=1
+```
+
+## 🔍 Testando
+Para rodar os testes, depois de ter configurado o prisma, rode o seguinte comando
+
+```bash
+$ npm run test
 ```
 
 ## 🧠 Desenvolvedor
